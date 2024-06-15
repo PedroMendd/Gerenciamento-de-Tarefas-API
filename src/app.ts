@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import "express-async-errors";
 import helmet from "helmet";
 import express, { json } from "express";

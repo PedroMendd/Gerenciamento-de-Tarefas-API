@@ -1,11 +1,12 @@
+import { injectable } from "tsyringe";
 import { prisma } from "../database/prisma";
 import { AppError } from "../errors/appError";
 import {
   TCategoryCreateBody,
   TCategoryResponse,
-  categoryCreateSchema,
 } from "../schemas/category.schemas";
 
+@injectable()
 export class CategoryServices {
   async create(body: TCategoryCreateBody): Promise<TCategoryResponse> {
     const data = await prisma.category.create({ data: body });

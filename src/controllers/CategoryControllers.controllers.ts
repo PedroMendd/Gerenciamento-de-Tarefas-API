@@ -1,19 +1,22 @@
 import { Request, Response } from "express";
-import { CategoryServices } from "../services/CategoryServices.services";
+import { inject, injectable } from "tsyringe";
+import { CategoryServices } from "../services/categoryServices.services";
 
+@injectable()
 export class CategoryControllers {
+  constructor(
+    @inject("CategoryServices")
+    private categoryServices: CategoryServices
+  ) {}
   async create(req: Request, res: Response) {
-    const categoryServices = new CategoryServices();
-
-    const response = await categoryServices.create(req.body);
+    const response = await this.categoryServices.create(req.body);
 
     return res.status(201).json(response);
   }
   async delete(req: Request, res: Response) {
-    const categoryServices = new CategoryServices();
     const id = req.params.id;
 
-    await categoryServices.delete(Number(id));
+    await this.categoryServices.delete(Number(id));
 
     return res.status(204).json();
   }

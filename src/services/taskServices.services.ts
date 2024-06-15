@@ -1,3 +1,4 @@
+import { injectable } from "tsyringe";
 import { prisma } from "../database/prisma";
 import { AppError } from "../errors/appError";
 import {
@@ -7,11 +8,11 @@ import {
   TTaskUpdateBody,
   TTaskWithCategory,
   getManyTasksSchema,
-  taskCreateSchema,
   taskSchema,
   taskWithCategorySchema,
 } from "../schemas/task.schemas";
 
+@injectable()
 export class TaskServices {
   async create(body: TTaskCreateBody): Promise<TTask> {
     const data = await prisma.task.create({ data: body });
