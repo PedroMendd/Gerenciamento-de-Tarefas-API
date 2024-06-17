@@ -6,11 +6,15 @@ export const taskSchema = z.object({
   content: z.string().min(1),
   finished: z.boolean().default(false),
   categoryId: z.number().int().optional().nullable(),
+  userId: z.number().int().positive().optional(),
 });
 
 export type TTask = z.infer<typeof taskSchema>;
 
-export const taskCreateSchema = taskSchema.omit({ id: true, finished: true });
+export const taskCreateSchema = taskSchema.omit({
+  id: true,
+  finished: true,
+});
 
 export type TTaskCreateBody = z.infer<typeof taskCreateSchema>;
 
@@ -26,7 +30,7 @@ export const taskUpdateSchema = z
 export type TTaskUpdateBody = z.infer<typeof taskUpdateSchema>;
 
 export const taskWithCategorySchema = taskSchema
-  .omit({ categoryId: true })
+  .omit({ categoryId: true, userId: true })
   .extend({
     category: z
       .object({

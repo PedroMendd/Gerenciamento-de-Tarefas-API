@@ -8,8 +8,13 @@ import {
 
 @injectable()
 export class CategoryServices {
-  async create(body: TCategoryCreateBody): Promise<TCategoryResponse> {
-    const data = await prisma.category.create({ data: body });
+  async create(
+    body: TCategoryCreateBody,
+    userId: number
+  ): Promise<TCategoryResponse> {
+    const newCategory = { ...body, userId };
+
+    const data = await prisma.category.create({ data: newCategory });
 
     return data;
   }

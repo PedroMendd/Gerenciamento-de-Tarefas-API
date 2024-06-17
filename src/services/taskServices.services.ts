@@ -1,6 +1,6 @@
 import { injectable } from "tsyringe";
 import { prisma } from "../database/prisma";
-import { AppError } from "../errors/appError";
+
 import {
   TGetManyTasksBody,
   TTask,
@@ -11,31 +11,52 @@ import {
   taskSchema,
   taskWithCategorySchema,
 } from "../schemas/task.schemas";
+import { AppError } from "../errors/appError";
 
 @injectable()
 export class TaskServices {
-  async create(body: TTaskCreateBody): Promise<TTask> {
-    const data = await prisma.task.create({ data: body });
+  async create(body: TTaskCreateBody, userId: number): Promise<TTask> {
+    const newTask = { ...body, userId };
+
+    const data = await prisma.task.create({ data: newTask });
 
     return data;
   }
-  async findMany(searchTerm?: string): Promise<TGetManyTasksBody> {
-    let searchParam = {};
-
-    if (searchTerm) {
-      searchParam = { category: { name: searchTerm } };
+  async findMany(
+    searchTerm?: string,
+    userId?: number
+  ): Promise<TGetManyTasksBody> {
+    // Certifique-se de que o userId é fornecido
+    if (!userId) {
+      throw new Error("User ID is required");
     }
 
-    const data = await prisma.task.findMany({
-      where: searchParam,
-      include: {
-        category: true,
-      },
-    });
+    // Construir o objeto de parâmetros de busca
+    let searchParam: any = { userId }; // Inicia com o filtro do userId
 
-    const validateData = getManyTasksSchema.parse(data);
+    if (searchTerm) {
+      // Adiciona o filtro de categoria se o searchTerm for fornecido
+      searchParam = {
+        ...searchParam,
+        category: { name: searchTerm },
+      };
+    }
 
-    return validateData;
+    try {
+      const data = await prisma.task.findMany({
+        where: searchParam,
+        include: {
+          category: true,
+        },
+      });
+
+      const validateData = getManyTasksSchema.parse(data);
+
+      return validateData;
+    } catch (error) {
+      console.error("Error in findMany service:", error);
+      throw new Error("Internal Server Error");
+    }
   }
   async findOne(id: number): Promise<TTaskWithCategory | null> {
     const data = await prisma.task.findUnique({
