@@ -5,7 +5,7 @@ import { ValidateBody } from "../middlewares/validateBody.middleware";
 import { categoryCreateSchema } from "../schemas/category.schemas";
 import { container } from "tsyringe";
 import { CategoryServices } from "../services/categoryServices.services";
-import { ValidateToken } from "../middlewares/ValidateToken.middleware";
+import { ValidateToken } from "../middlewares/validateToken.middleware";
 import { IsCategoryOwner } from "../middlewares/isCategoryOwner.middleware";
 
 container.registerSingleton("CategoryServices", CategoryServices);

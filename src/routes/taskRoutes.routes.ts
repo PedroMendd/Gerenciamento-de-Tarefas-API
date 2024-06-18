@@ -6,7 +6,7 @@ import { taskCreateSchema, taskUpdateSchema } from "../schemas/task.schemas";
 import { CategoryIdInBody } from "../middlewares/CategoryIdInBody.middleware";
 import { container } from "tsyringe";
 import { TaskServices } from "../services/taskServices.services";
-import { ValidateToken } from "../middlewares/ValidateToken.middleware";
+import { ValidateToken } from "../middlewares/validateToken.middleware";
 import { IsTaskOwner } from "../middlewares/isTaskOwner.middleware";
 
 container.registerSingleton("TaskServices", TaskServices);

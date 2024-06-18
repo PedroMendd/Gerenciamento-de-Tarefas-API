@@ -7,7 +7,7 @@ import {
   userLoginBodySchema,
   userRegisterBodySchema,
 } from "../schemas/user.schemas";
-import { ValidateToken } from "../middlewares/ValidateToken.middleware";
+import { ValidateToken } from "../middlewares/validateToken.middleware";
 import { IsEmailAlreadyRegistered } from "../middlewares/isEmailAlreadyRegistered.middleware";
 
 container.registerSingleton("UserServices", UserServices);
