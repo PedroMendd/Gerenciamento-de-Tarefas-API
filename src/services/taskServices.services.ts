@@ -26,16 +26,13 @@ export class TaskServices {
     searchTerm?: string,
     userId?: number
   ): Promise<TGetManyTasksBody> {
-    // Certifique-se de que o userId é fornecido
     if (!userId) {
       throw new Error("User ID is required");
     }
 
-    // Construir o objeto de parâmetros de busca
-    let searchParam: any = { userId }; // Inicia com o filtro do userId
+    let searchParam: any = { userId };
 
     if (searchTerm) {
-      // Adiciona o filtro de categoria se o searchTerm for fornecido
       searchParam = {
         ...searchParam,
         category: { name: searchTerm },
